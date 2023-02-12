@@ -19,7 +19,7 @@ export async function getServerSideProps() {
   const responseServerSideProps = ResponseAxios?.data?.list;
 
   return {
-    props: { responseServerSideProps }, 
+    props: { responseServerSideProps },
   };
 }
 
