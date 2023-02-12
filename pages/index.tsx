@@ -1,11 +1,49 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
-import styles from '@/styles/Home.module.css'
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { Toaster } from "react-hot-toast";
+import { setCookie } from "nookies";
 
-const inter = Inter({ subsets: ['latin'] })
+import { Alert } from "@/src/components/toast/toast";
+import requestAxios from "@/infra/api/request/request";
 
-export default function Home() {
+export default function Login() {
+
+  const router = useRouter();
+
+  const [user, setUser] = useState({ user: "", password: "" });
+
+  function onChange(event: any) {
+    const { name, value } = event.target;
+    setUser({ ...user, [name]: value });
+  }
+
+  async function onSubmit(event: any) {
+    event.preventDefault();
+
+    if (user?.user == "" || user?.password == "") {
+      return;
+    }
+
+    const responseAxios = await requestAxios(user);
+
+    if (responseAxios.Message?.Token.length > 0) {
+      
+      setCookie(null, "Next_User", `${JSON.stringify(responseAxios.Message)}`, {
+        maxAge: 30 * 24 * 60 * 60,
+        path: "*",
+      });
+
+      Alert.notifySucess("User successfully logged in!");
+
+      return setTimeout(() => {
+        router.push("/home");
+      }, 2000);
+    }
+
+    Alert.notifyError("Incorrect username or password!");
+  }
+
   return (
     <>
       <Head>
@@ -14,110 +52,53 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-        <div className={styles.description}>
-          <p>
-            Get started by editing&nbsp;
-            <code className={styles.code}>pages/index.tsx</code>
-          </p>
-          <div>
-            <a
-              href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              By{' '}
-              <Image
-                src="/vercel.svg"
-                alt="Vercel Logo"
-                className={styles.vercelLogo}
-                width={100}
-                height={24}
-                priority
-              />
-            </a>
-          </div>
+
+      <>
+        <div className="container d-flex flex-column justify-content-center align-itens-center text-center vh-100">
+          <main className="form-signin w-100 m-auto">
+            <form onSubmit={onSubmit} className="container w-100">
+              <i
+                style={{ fontSize: "64px" }}
+                className="bi bi-chat-left-dots-fill"
+              ></i>
+              <h1 className="h3 mb-3 fw-normal">Please sign in</h1>
+
+              <div className="form-floating py-1">
+                <input
+                  type="email"
+                  className="form-control"
+                  id="floatingInput"
+                  placeholder="name@example.com"
+                  name="user"
+                  autoComplete="false"
+                  onChange={onChange}
+                />
+                <label htmlFor="floatingInput">Email address</label>
+              </div>
+
+              <div className="form-floating py-1">
+                <input
+                  type="password"
+                  className="form-control"
+                  id="floatingPassword"
+                  placeholder="Password"
+                  name="password"
+                  autoComplete="false"
+                  onChange={onChange}
+                />
+                <label htmlFor="floatingPassword">Password</label>
+              </div>
+
+              <div className="checkbox my-3" />
+
+              <button className="w-100 btn btn-lg btn-primary" type="submit">
+                Sign in
+              </button>
+            </form>
+          </main>
+          <Toaster />
         </div>
-
-        <div className={styles.center}>
-          <Image
-            className={styles.logo}
-            src="/next.svg"
-            alt="Next.js Logo"
-            width={180}
-            height={37}
-            priority
-          />
-          <div className={styles.thirteen}>
-            <Image
-              src="/thirteen.svg"
-              alt="13"
-              width={40}
-              height={31}
-              priority
-            />
-          </div>
-        </div>
-
-        <div className={styles.grid}>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Docs <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Find in-depth information about Next.js features and&nbsp;API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Learn <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Learn about Next.js in an interactive course with&nbsp;quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Templates <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Discover and deploy boilerplate example Next.js&nbsp;projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Deploy <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Instantly deploy your Next.js site to a shareable URL
-              with&nbsp;Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
+      </>
     </>
-  )
+  );
 }
