@@ -1,17 +1,29 @@
 import { useRouter } from "next/router";
 import { destroyCookie } from "nookies";
 import Link from "next/link";
-import styles from "@/src/components/menu/menu.module.css";
+import styles from "@/src/components/utils/menu/menu.module.css";
 
-export default function Menu() {
+interface PropsMenu {
+  cookies? : object;
+}
+
+export default function Menu({ cookies }: PropsMenu) {
   const router = useRouter();
 
-  function clearStorage() {
+  const parseCookies = JSON.parse(cookies?.Next_User);
+  const admin = parseCookies?.User?.next_admin;
+
+  function clearStorage(): void {
     destroyCookie(null, "Next_User");
   }
 
   return (
     <>
+      {/**
+       *
+       * View Smartphone
+       *
+       */}
       <div className="d-flex flex-row flex-shrink-0 bg-light vw-100 position-fixed bottom-0 d-sm-none">
         <ul className="nav nav-pills nav-flush flex-row justify-content-between mb-auto text-center w-100">
           <Link
@@ -118,6 +130,12 @@ export default function Menu() {
         </ul>
       </div>
 
+      {/**
+       *
+       * View Desktop
+       *
+       */}
+
       <div
         id={styles.mobile}
         className=" d-flex flex-column flex-shrink-0 bg-light vh-100"
@@ -211,6 +229,17 @@ export default function Menu() {
             </Link>
           </li>
         </ul>
+
+        {admin && (
+          <Link
+            href="/company"
+            passHref
+            className="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none"
+          >
+            <i className="bi bi-building"></i>
+          </Link>
+        )}
+
         <div className="border-top">
           <Link
             onClick={clearStorage}

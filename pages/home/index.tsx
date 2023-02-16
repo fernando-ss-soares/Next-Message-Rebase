@@ -1,8 +1,7 @@
 import Title from "@/src/components/home/title";
 import Hero from "@/src/components/home/hero";
 import Card from "@/src/components/home/card";
-import Menu from "@/src/components/menu/menu";
-import StyleMenu from "@/src/components/menu/menu.module.css";
+import StyleMenu from "@/src/components/utils/menu/menu.module.css";
 import request from "@/infra/api/config/api.config";
 import axios from "axios";
 
@@ -30,7 +29,6 @@ interface HomeProps {
 export default function Home({ responseServerSideProps }: HomeProps) {
   return (
     <>
-      <Menu />
       <div className="container-sm px-4 py-5 d-flex flex-column">
         <Title title="Next Message" />
 

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { setCookie } from "nookies";
 
-import { Alert } from "@/src/components/toast/toast";
+import { Alert } from "@/src/components/utils/toast/toast";
 import requestAxios from "@/infra/api/request/request";
 
 export default function Login() {
