@@ -1,4 +1,3 @@
-import Menu from "@/src/components/menu/menu";
 import Title from "@/src/components/journey/title";
 import Form from "@/src/components/journey/form";
 import Table from "@/src/components/journey/table";
@@ -14,8 +13,6 @@ export default function Journey() {
 
   return (
     <>
-      <Menu />
-
       <div className="container px-4 py-5">
         <Title title="Journey" />
         <Link href="journey/create">
