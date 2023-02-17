@@ -125,6 +125,16 @@ export default function Menu({ cookies }: PropsMenu) {
             </Link>
           </li>
 
+          {userIsAdmin && (
+          <Link
+            href="/company"
+            passHref
+            className="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none"
+          >
+            <i className="bi bi-building"></i>
+          </Link>
+        )}
+
           <Link
             onClick={clearStorage}
             href="/"
