@@ -11,7 +11,7 @@ interface PropsMenu {
 export default function Menu({ cookies }: PropsMenu) {
   const router = useRouter();
   const [Cookies, setCookies] = useState<object>();
-  
+
   useEffect(() => {
     const isAdmin = JSON.parse(cookies?.Next_User);
     setCookies(isAdmin.User.next_admin);
@@ -125,6 +125,17 @@ export default function Menu({ cookies }: PropsMenu) {
             </Link>
           </li>
 
+          {userIsAdmin && (
+            <button
+              style={{ border: "none" }}
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+              className=" bg-light d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none"
+            >
+              <i className="bi bi-building"></i>
+            </button>
+          )}
+
           <Link
             onClick={clearStorage}
             href="/"
@@ -236,13 +247,14 @@ export default function Menu({ cookies }: PropsMenu) {
           </li>
         </ul>
         {userIsAdmin && (
-          <Link
-            href="/company"
-            passHref
-            className="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none"
+          <button
+            style={{ border: "none" }}
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+            className=" bg-light d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none"
           >
             <i className="bi bi-building"></i>
-          </Link>
+          </button>
         )}
 
         <div className="border-top">
@@ -254,6 +266,42 @@ export default function Menu({ cookies }: PropsMenu) {
           >
             <i className="bi bi-box-arrow-left"></i>
           </Link>
+        </div>
+      </div>
+      <div
+        className="modal fade"
+        id="exampleModal"
+        tabIndex={-1}
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h1 className="modal-title fs-5" id="exampleModalLabel">
+                Modal title
+              </h1>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">...</div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="button" className="btn btn-primary">
+                Save changes
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </>

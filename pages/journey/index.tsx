@@ -1,4 +1,4 @@
-import Title from "@/src/components/journey/title";
+import Title from "@/src/components/utils/header/title";
 import Form from "@/src/components/journey/form";
 import Table from "@/src/components/journey/table";
 import { useState } from "react";
