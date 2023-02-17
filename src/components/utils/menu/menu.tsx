@@ -1,17 +1,23 @@
-import { useRouter } from "next/router";
+import styles from "@/src/components/utils/menu/menu.module.css";
 import { destroyCookie } from "nookies";
 import Link from "next/link";
-import styles from "@/src/components/utils/menu/menu.module.css";
+import { useRouter } from "next/router";
+import { useState, useEffect } from "react";
 
 interface PropsMenu {
-  cookies? : object;
+  cookies?: any;
 }
 
 export default function Menu({ cookies }: PropsMenu) {
   const router = useRouter();
+  const [Cookies, setCookies] = useState<object>();
+  
+  useEffect(() => {
+    const isAdmin = JSON.parse(cookies?.Next_User);
+    setCookies(isAdmin.User.next_admin);
+  }, [cookies]);
 
-  const parseCookies = JSON.parse(cookies?.Next_User);
-  const admin = parseCookies?.User?.next_admin;
+  const userIsAdmin = Cookies;
 
   function clearStorage(): void {
     destroyCookie(null, "Next_User");
@@ -229,8 +235,7 @@ export default function Menu({ cookies }: PropsMenu) {
             </Link>
           </li>
         </ul>
-
-        {admin && (
+        {userIsAdmin && (
           <Link
             href="/company"
             passHref
