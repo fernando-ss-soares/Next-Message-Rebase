@@ -1,23 +1,15 @@
+import ContextCookieUser from "@/src/context/user";
 import styles from "@/src/components/utils/menu/menu.module.css";
-import { destroyCookie } from "nookies";
 import Link from "next/link";
+import { destroyCookie } from "nookies";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import { useContext } from "react";
 
-interface PropsMenu {
-  cookies?: any;
-}
-
-export default function Menu({ cookies }: PropsMenu) {
+export default function Menu() {
   const router = useRouter();
-  const [Cookies, setCookies] = useState<object>();
+  const Context = useContext(ContextCookieUser());
 
-  useEffect(() => {
-    const isAdmin = JSON.parse(cookies?.Next_User);
-    setCookies(isAdmin.User.next_admin);
-  }, [cookies]);
-
-  const userIsAdmin = Cookies;
+  const userIsAdmin = Context?.User?.next_admin;
 
   function clearStorage(): void {
     destroyCookie(null, "Next_User");
