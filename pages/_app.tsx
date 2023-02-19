@@ -2,14 +2,13 @@ import "@/node_modules/bootstrap/dist/css/bootstrap.css";
 import "@/node_modules/bootstrap-icons/font/bootstrap-icons.css";
 import "@/styles/globals.css";
 import Menu from "@/src/components/utils/menu/menu";
-import { parseCookies } from "nookies";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import Script from "next/script";
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
-  const cookies = parseCookies();
+
   return (
     <>
       <Script
@@ -17,7 +16,7 @@ export default function App({ Component, pageProps }: AppProps) {
         integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
         crossOrigin="anonymous"
       ></Script>
-      {router.pathname != "/" && <Menu cookies={cookies} />}
+      {router.pathname != "/" && <Menu />}
       <Component {...pageProps} />
     </>
   );
